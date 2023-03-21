@@ -21,21 +21,22 @@ pipeline {
 			}
 			}
 		stage("Integration test") {
-		steps {
-			echo "Integration test"
+		    steps {
+			   echo "Integration test"
 			}
 		}
 	} 
 	
-	post {
+    post {
 		always{
 			echo "Im awesome. I run always"
 		}
-	}	success {
+		success {
 			echo " I run when you are successful"
 		}
 		failure {
 			echo " I run when you fail"
 		
 		}
-}   
+	}
+}
