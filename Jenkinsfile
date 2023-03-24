@@ -12,12 +12,12 @@ pipeline {
 	//agent { docker { image 'maven:3.6.3'} }
 	//agent { docker { image 'node:alpine3.16'}}
 	  environment {
-		dockerhome = tool "myDocker"
+		dockerHome = tool "myDocker"
 		mavenHome = tool "myMaven"
 		PATH = "$dockerHome/bin:$mavenHome/bin:$PATH"
 	  }
 	stages {
-		stage("Build") {
+		stage("Checkout") {
 		steps {
 			sh "mvn --version"
 			sh "docker version"
@@ -30,14 +30,19 @@ pipeline {
 			echo "BUILD-URL - $env.BUILD_URL"
 		}
 			}
+		stage("Compile") {
+			steps {
+				sh "mvn clean compile"
+			}
+		}
 		stage("Test"){
 		steps {
-			echo "Test"
+			sh "mvn test"
 			}
 			}
 		stage("Integration test") {
 		    steps {
-			   echo "Integration test"
+			    sh "mvn failsafe:integration-test failsafe:verify"
 			}
 		}
 	} 
